@@ -7,7 +7,11 @@
 
 #ifdef __linux__
 #elif _WIN32
-#include <chrono>
+	#include <chrono>
+	#include <windows.h>
+	#include "pdh.h"
+
+	#pragma comment(lib, "pdh.lib")
 #endif
 
 class Systeminfo{
@@ -22,7 +26,9 @@ class Systeminfo{
 		unsigned long long vergangene_us_seit_start = 0;	// [µs]	
 	
 		float prozessorgesamtauslastung = 0.0;
-		std::vector<float> prozessorkernauslastung;
+		std::vector<float> prozessorkernauslastung;	
+
+		~Systeminfo();
 		
 		int init();
 		void berechne_schleifenzeit();
@@ -35,6 +41,14 @@ class Systeminfo{
 		#elif _WIN32
 			std::chrono::high_resolution_clock::time_point startzeitpunkt;
 			std::chrono::high_resolution_clock::time_point endzeitpunkt;
+
+			PDH_HQUERY cpuQuery;
+			PDH_HCOUNTER cpuTotal;
+
+			int numCores;
+			
+			std::vector<PDH_HQUERY> coreQuery;
+			std::vector<PDH_HCOUNTER> coreTotal;
 		#endif
 		
 	

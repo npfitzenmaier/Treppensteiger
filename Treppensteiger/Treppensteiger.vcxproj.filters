@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Quelldateien\JoyShock">
+      <UniqueIdentifier>{01e59d40-8cb7-4816-8e9f-871406e9e0fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\JoyShock">
+      <UniqueIdentifier>{757a86e4-b2e5-47fa-a9fa-06360933f4f9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="arm.cpp">
@@ -96,88 +102,121 @@
     <ClCompile Include="treppensteiger.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="JoyShockLibrary\JoyShockLibrary.cpp">
+      <Filter>Quelldateien\JoyShock</Filter>
+    </ClCompile>
+    <ClCompile Include="JoyShockLibrary\stdafx.cpp">
+      <Filter>Quelldateien\JoyShock</Filter>
+    </ClCompile>
+    <ClCompile Include="JoyShockLibrary\hidapi\hid.c">
+      <Filter>Quelldateien\JoyShock</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="arm.hpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="controller.hpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="datenlogger.hpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="dreistern.hpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="dreistern_laengs.hpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="dreistern_seitlich.hpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="gpio_schnittstelle.hpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="i2c_schnittstelle.hpp">
-      <Filter>Quelldateien</Filter>
-    </ClInclude>
-    <ClInclude Include="imu.hpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="kraftsensor.hpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="lenkung.hpp">
-      <Filter>Quelldateien</Filter>
-    </ClInclude>
-    <ClInclude Include="main.hpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="matrix.hpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="main.hpp">
+      <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="motortreiber.hpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="netzwerk.hpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="rgb_led.hpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="sequenzregler.hpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="spi_schnittstelle.hpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="stellglied.hpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="stuhl.hpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="systeminfo.hpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="telemetrie.hpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="treppe.hpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="treppensteiger.hpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="uart_schnittstelle.hpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="vektor.hpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="winkelsensor.hpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="imu.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="JoyShockLibrary\JoyShockLibrary.hpp">
+      <Filter>Headerdateien\JoyShock</Filter>
+    </ClInclude>
+    <ClInclude Include="JoyShockLibrary\SensorFusion.hpp">
+      <Filter>Headerdateien\JoyShock</Filter>
+    </ClInclude>
+    <ClInclude Include="JoyShockLibrary\stdafx.hpp">
+      <Filter>Headerdateien\JoyShock</Filter>
+    </ClInclude>
+    <ClInclude Include="JoyShockLibrary\targetver.hpp">
+      <Filter>Headerdateien\JoyShock</Filter>
+    </ClInclude>
+    <ClInclude Include="JoyShockLibrary\InputHelpers.hpp">
+      <Filter>Headerdateien\JoyShock</Filter>
+    </ClInclude>
+    <ClInclude Include="JoyShockLibrary\tools.hpp">
+      <Filter>Headerdateien\JoyShock</Filter>
+    </ClInclude>
+    <ClInclude Include="JoyShockLibrary\JoyShock.hpp">
+      <Filter>Headerdateien\JoyShock</Filter>
+    </ClInclude>
+    <ClInclude Include="JoyShockLibrary\hidapi\SetupAPI.h">
+      <Filter>Headerdateien\JoyShock</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

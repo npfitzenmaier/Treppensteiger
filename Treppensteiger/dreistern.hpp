@@ -14,7 +14,7 @@ class Dreistern{
 		Vektor achse;
 		float achse_rad_abstand;
 		
-		Vektor rpos_raeder[2];
+		Vektor rpos_raeder[3];
 		
 		Motortreiber motortreiber_steig;
 		

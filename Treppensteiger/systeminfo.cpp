@@ -7,14 +7,69 @@
 #include <vector>
 
 //https://github.com/vivaladav/BitsOfBytes/blob/master/cpp-program-to-get-cpu-usage-from-command-line-in-linux/main.cpp
+//https://stackoverflow.com/questions/63166/how-to-determine-cpu-and-memory-consumption-from-inside-a-process
+
+Systeminfo::~Systeminfo(){
+	PdhCloseQuery(cpuQuery);
+	for(int i=0; i<numCores; i++){
+		PdhCloseQuery(coreQuery[i]);
+	}
+}
 
 int Systeminfo::init(){
 	#ifdef __linux__
-		if (clock_gettime(CLOCK_MONOTONIC_RAW, &startzeitpunkt)) {
+		if(clock_gettime(CLOCK_MONOTONIC_RAW, &startzeitpunkt)){
 			return -1;
 		}
 	#elif _WIN32
 		startzeitpunkt = std::chrono::high_resolution_clock::now();
+
+		SYSTEM_INFO sysinfo;
+		GetSystemInfo(&sysinfo);
+		numCores = sysinfo.dwNumberOfProcessors;
+
+		std::vector<PDH_HQUERY> v1(numCores);
+		std::vector<PDH_HCOUNTER> v2(numCores);
+
+		coreQuery = v1;
+		coreTotal = v2;
+
+		PDH_STATUS pdhStatus;
+
+		LPCWSTR prozessorgesamtauslastungsindikatorpfad = L"\\Processor(_Total)\\% Processor Time";
+		std::wstring prozessorkernauslastungsindikatorpfad;
+
+		pdhStatus = PdhOpenQuery(NULL, NULL, &cpuQuery);
+		if(pdhStatus != ERROR_SUCCESS){
+			wprintf(L"PdhOpenQuery failed with 0x%x\n", pdhStatus);
+		}
+
+		for(int i=0; i<numCores; i++) {
+
+			pdhStatus = PdhOpenQuery(NULL, NULL, &coreQuery[i]);
+			if(pdhStatus != ERROR_SUCCESS){
+				wprintf(L"PdhOpenQuery failed with 0x%x\n", pdhStatus);
+			}
+		}	
+
+		PdhAddEnglishCounter(cpuQuery, prozessorgesamtauslastungsindikatorpfad, NULL, &cpuTotal);
+		if(pdhStatus != ERROR_SUCCESS) {
+			wprintf(L"PdhAddCounter failed with 0x%x\n", pdhStatus);
+		}
+
+		for(int i=0; i<numCores; i++){
+			prozessorkernauslastungsindikatorpfad = L"\\Processor(" + std::to_wstring(i) + L")\\% Processor Time";
+			LPCWSTR pfad = prozessorkernauslastungsindikatorpfad.c_str();
+			PdhAddEnglishCounter(coreQuery[i], pfad, NULL, &coreTotal[i]);
+			if(pdhStatus != ERROR_SUCCESS){
+				wprintf(L"PdhAddCounter failed with 0x%x\n", pdhStatus);
+			}
+		}
+
+		PdhCollectQueryData(cpuQuery);
+		for(int i=0; i<numCores; i++){
+			PdhCollectQueryData(coreQuery[i]);
+		}
 	#endif
 	
 	try{
@@ -83,33 +138,48 @@ void Systeminfo::berechne_prozessorauslastung(){
 	if(vergangene_zeit_seit_letzter_prozessorauslastung_berechnung >= 1.0){		
 		eintraege_zuvor = eintraege_aktuell;
 		eintraege_aktuell.clear();
-		prozessordaten_einlesen(eintraege_aktuell);
-		
-		const size_t anzahl_eintraege = eintraege_aktuell.size();
-		
 		prozessorkernauslastung.clear();
+		
+		#ifdef __linux__
+			prozessordaten_einlesen(eintraege_aktuell);
 
-		for(size_t i = 0; i < anzahl_eintraege; ++i){
-			const Prozessordaten &e1 = eintraege_zuvor[i];
-			const Prozessordaten &e2 = eintraege_aktuell[i];		
+			const size_t anzahl_eintraege = eintraege_aktuell.size();
 
-			const float aktive_zeit		= static_cast<float>(berechne_prozessor_aktive_dauer(e2) - berechne_prozessor_aktive_dauer(e1));
-			const float leerlauf_zeit	= static_cast<float>(berechne_prozessor_leerlauf_dauer(e2) - berechne_prozessor_leerlauf_dauer(e1));
-			const float gesamtzeit		= aktive_zeit + leerlauf_zeit;		
-			
-			if(i == 0){
-				prozessorgesamtauslastung = 100.f*(aktive_zeit/gesamtzeit);
+			for (size_t i = 0; i < anzahl_eintraege; ++i) {
+				const Prozessordaten& e1 = eintraege_zuvor[i];
+				const Prozessordaten& e2 = eintraege_aktuell[i];
+
+				const float aktive_zeit = static_cast<float>(berechne_prozessor_aktive_dauer(e2) - berechne_prozessor_aktive_dauer(e1));
+				const float leerlauf_zeit = static_cast<float>(berechne_prozessor_leerlauf_dauer(e2) - berechne_prozessor_leerlauf_dauer(e1));
+				const float gesamtzeit = aktive_zeit + leerlauf_zeit;
+
+				if (i == 0) {
+					prozessorgesamtauslastung = 100.f * (aktive_zeit / gesamtzeit);
+				}
+				else {
+					prozessorkernauslastung.push_back(100.f * (aktive_zeit / gesamtzeit));
+				}
+			}			
+		#elif _WIN32		
+			prozessorgesamtauslastung = 100.f * 0.0;
+			PDH_FMT_COUNTERVALUE counterVal;
+
+			PdhCollectQueryData(cpuQuery);
+			PdhGetFormattedCounterValue(cpuTotal, PDH_FMT_DOUBLE, NULL, &counterVal);
+			prozessorgesamtauslastung = (float) counterVal.doubleValue;
+
+			for(int i=0; i<numCores; i++){
+				PdhCollectQueryData(coreQuery[i]);
+				PdhGetFormattedCounterValue(coreTotal[i], PDH_FMT_DOUBLE, NULL, &counterVal);
+				prozessorkernauslastung.push_back((float) counterVal.doubleValue);
 			}
-			else{
-				prozessorkernauslastung.push_back(100.f*(aktive_zeit/gesamtzeit));
-			}
-		}
+		#endif
+
 		vergangene_zeit_seit_letzter_prozessorauslastung_berechnung = 0.0;
 	}		
 }
 
-void Systeminfo::prozessordaten_einlesen(std::vector<Prozessordaten> &eintraege){
-	#ifdef __linux__
+void Systeminfo::prozessordaten_einlesen(std::vector<Prozessordaten> &eintraege){	
 		std::ifstream fd("/proc/stat");
 
 		std::string zeile;
@@ -142,7 +212,6 @@ void Systeminfo::prozessordaten_einlesen(std::vector<Prozessordaten> &eintraege)
 					ss >> eintrag.zeiten[i];
 			}
 		}
-	#endif
 }
 
 size_t Systeminfo::berechne_prozessor_leerlauf_dauer(const Prozessordaten &e){

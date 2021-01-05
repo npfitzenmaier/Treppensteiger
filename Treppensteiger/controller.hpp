@@ -92,6 +92,10 @@ class Controller{
 	#ifdef __linux__
 		struct js_event js;
 		struct ff_effect effect;
+
+	#elif _WIN32
+		int* deviceHandleArray;
+		int deviceId;
 	#endif
 };
 #endif

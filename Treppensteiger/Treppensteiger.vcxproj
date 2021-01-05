@@ -92,6 +92,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>SetupAPI.Lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\Studium_BA_EIFB\8. Semester\Treppensteiger\20201215_Steuerung_Visual_Studio\Treppensteiger\Treppensteiger\JoyShockLibrary\hidapi;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -148,6 +150,9 @@
     <ClCompile Include="gpio_schnittstelle.cpp" />
     <ClCompile Include="i2c_schnittstelle.cpp" />
     <ClCompile Include="imu.cpp" />
+    <ClCompile Include="JoyShockLibrary\hidapi\hid.c" />
+    <ClCompile Include="JoyShockLibrary\JoyShockLibrary.cpp" />
+    <ClCompile Include="JoyShockLibrary\stdafx.cpp" />
     <ClCompile Include="kraftsensor.cpp" />
     <ClCompile Include="lenkung.cpp" />
     <ClCompile Include="main.cpp" />
@@ -179,6 +184,14 @@
     <ClInclude Include="gpio_schnittstelle.hpp" />
     <ClInclude Include="i2c_schnittstelle.hpp" />
     <ClInclude Include="imu.hpp" />
+    <ClInclude Include="JoyShockLibrary\hidapi\SetupAPI.h" />
+    <ClInclude Include="JoyShockLibrary\InputHelpers.hpp" />
+    <ClInclude Include="JoyShockLibrary\JoyShock.hpp" />
+    <ClInclude Include="JoyShockLibrary\JoyShockLibrary.hpp" />
+    <ClInclude Include="JoyShockLibrary\SensorFusion.hpp" />
+    <ClInclude Include="JoyShockLibrary\stdafx.hpp" />
+    <ClInclude Include="JoyShockLibrary\targetver.hpp" />
+    <ClInclude Include="JoyShockLibrary\tools.hpp" />
     <ClInclude Include="kraftsensor.hpp" />
     <ClInclude Include="lenkung.hpp" />
     <ClInclude Include="main.hpp" />

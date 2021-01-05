@@ -1,7 +1,10 @@
 #include "controller.hpp"
 
 #ifdef __linux__
-#include <unistd.h>
+	#include <unistd.h>
+#elif _WIN32
+	#include <windows.h>
+	#include "JoyShockLibrary/JoyShockLibrary.hpp"
 #endif
 
 
@@ -15,6 +18,9 @@ Controller::~Controller(){
 	#ifdef __linux__
 		close( joy_fd );
 		close( event_fd );
+	#elif _WIN32
+		JslDisconnectAndDisposeAll();
+		delete[] deviceHandleArray;
 	#endif
 	delete[] achse_rohwert;
 	delete[] achse_rohwert_vorher;
@@ -24,8 +30,9 @@ Controller::~Controller(){
 }
 
 int Controller::init(){
-	#ifdef __linux__
-		int timeout = 0;
+	int timeout = 0;
+
+	#ifdef __linux__		
 		while((joy_fd = open(JOY_DEV , O_RDONLY)) == -1){
 			timeout++;	
 			sleep(1);
@@ -88,6 +95,38 @@ int Controller::init(){
 		ioctl(event_fd, EVIOCSFF, &effect);
 	
 		setze_rgb_led_farbe(187,0,0);
+
+	#elif _WIN32
+		bool ds4_controller_verbunden = false;
+		int geraeteanzahl;
+		int verbundene_geraeteanzahl;
+		while(!ds4_controller_verbunden){
+			geraeteanzahl = JslConnectDevices();
+			deviceHandleArray = new int[geraeteanzahl];
+			verbundene_geraeteanzahl = JslGetConnectedDeviceHandles(deviceHandleArray, geraeteanzahl);
+
+			if(geraeteanzahl != verbundene_geraeteanzahl) return -1;
+
+			for(int i=0; i<geraeteanzahl; i++){
+				if(JslGetControllerType(i) == 4){
+					deviceId = i;
+					ds4_controller_verbunden = true;
+				}
+			}
+			if(!ds4_controller_verbunden){		
+				if(timeout >= 20){	// 20 Sekunden Timeout
+					printf( "Couldn't open controller\n" );
+					return -1;
+				}
+				else{
+					JslDisconnectAndDisposeAll();
+					delete[] deviceHandleArray;
+
+					timeout++;	
+					Sleep(1000);
+				}
+			}			
+		}
 	#endif
 	return 0;
 }

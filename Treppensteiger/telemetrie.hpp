@@ -33,7 +33,7 @@
 #elif _WIN32
 	// Codepage 850 Westeuropaeisch (oktal)
 	#define DEGREE		"\370"
-	#define MICROTESLA	"\346"
+	#define MICRO		"\346"
 #endif
 //printf("\033[1;1H");		// positions the cursor at row 1, column 1
 

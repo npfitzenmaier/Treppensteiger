@@ -154,12 +154,12 @@ void Telemetrie::systeminfo_ausgeben(Systeminfo &systeminfo){
 
 void Telemetrie::imu_daten_ausgeben(IMU &imu, const char* ueberschrift){
 	printf(T_BLACK_B_WHITE "%s" T_WHITE_B_BLACK "\n", ueberschrift);
-	printf("(Magnetfeld)      x: " T_Grey_B_BLACK "%8.1f " MICROTESLA T_WHITE_B_BLACK "   |  y: " T_Grey_B_BLACK "%8.1f " MICROTESLA T_WHITE_B_BLACK "   |  z: " T_Grey_B_BLACK "%8.1f " MICROTESLA T_WHITE_B_BLACK 
-		"   |  Norm: " T_Grey_B_BLACK "%8.1f " MICROTESLA T_WHITE_B_BLACK "        \n"
+	printf("(Magnetfeld)      x: " T_Grey_B_BLACK "%8.1f " MICRO "T" T_WHITE_B_BLACK "   |  y: " T_Grey_B_BLACK "%8.1f " MICRO "T" T_WHITE_B_BLACK "   |  z: " T_Grey_B_BLACK "%8.1f " MICRO "T" T_WHITE_B_BLACK 
+		"   |  Norm: " T_Grey_B_BLACK "%8.1f " MICRO "T" T_WHITE_B_BLACK "        \n"
 		, imu.mag.x, imu.mag.y, imu.mag.z, imu.mag.betrag());
 		
-	printf("(Magnetfeld)      x: " T_GREEN_B_BLACK "%8.1f " MICROTESLA T_WHITE_B_BLACK "   |  y: " T_GREEN_B_BLACK "%8.1f " MICROTESLA T_WHITE_B_BLACK "   |  z: " T_GREEN_B_BLACK "%8.1f " MICROTESLA T_WHITE_B_BLACK 
-		"   |  Norm: " T_YELLOW_B_BLACK "%8.1f " MICROTESLA T_WHITE_B_BLACK "        \n"
+	printf("(Magnetfeld)      x: " T_GREEN_B_BLACK "%8.1f " MICRO "T" T_WHITE_B_BLACK "   |  y: " T_GREEN_B_BLACK "%8.1f " MICRO "T" T_WHITE_B_BLACK "   |  z: " T_GREEN_B_BLACK "%8.1f " MICRO "T" T_WHITE_B_BLACK 
+		"   |  Norm: " T_YELLOW_B_BLACK "%8.1f " MICRO "T" T_WHITE_B_BLACK "        \n"
 		, imu.sys_mag.x, imu.sys_mag.y, imu.sys_mag.z, imu.sys_mag.betrag());
 		
 	printf("(Beschleunigung)  x: " T_Grey_B_BLACK "%8.1f mg" T_WHITE_B_BLACK "   |  y: " T_Grey_B_BLACK "%8.1f mg" T_WHITE_B_BLACK "   |  z: " T_Grey_B_BLACK "%8.1f mg" T_WHITE_B_BLACK 
@@ -170,13 +170,13 @@ void Telemetrie::imu_daten_ausgeben(IMU &imu, const char* ueberschrift){
 		"   |  Norm: " T_YELLOW_B_BLACK "%8.1f mg" T_WHITE_B_BLACK "        \n"
 		, imu.sys_acc.x, imu.sys_acc.y, imu.sys_acc.z, imu.sys_acc.betrag());
 		
-	printf("(Gyroskop)        x: " T_Grey_B_BLACK "%8.1f °/s" T_WHITE_B_BLACK "  |  y: " T_Grey_B_BLACK "%8.1f °/s" T_WHITE_B_BLACK "  |  z: " T_Grey_B_BLACK "%8.1f °/s" T_WHITE_B_BLACK 
+	printf("(Gyroskop)        x: " T_Grey_B_BLACK "%8.1f " DEGREE "/s" T_WHITE_B_BLACK "  |  y: " T_Grey_B_BLACK "%8.1f " DEGREE "/s" T_WHITE_B_BLACK "  |  z: " T_Grey_B_BLACK "%8.1f " DEGREE "/s" T_WHITE_B_BLACK
 		"        \n", imu.gyr.x, imu.gyr.y, imu.gyr.z);
 		
-	printf("(Gyroskop)        x: " T_GREEN_B_BLACK "%8.1f °/s" T_WHITE_B_BLACK "  |  y: " T_GREEN_B_BLACK "%8.1f °/s" T_WHITE_B_BLACK "  |  z: " T_GREEN_B_BLACK "%8.1f °/s" T_WHITE_B_BLACK 
+	printf("(Gyroskop)        x: " T_GREEN_B_BLACK "%8.1f " DEGREE "/s" T_WHITE_B_BLACK "  |  y: " T_GREEN_B_BLACK "%8.1f " DEGREE "/s" T_WHITE_B_BLACK "  |  z: " T_GREEN_B_BLACK "%8.1f " DEGREE "/s" T_WHITE_B_BLACK
 		"        \n", imu.sys_gyr.x, imu.sys_gyr.y, imu.sys_gyr.z);
 		
-	printf("(Temperatur)      T: " T_GREEN_B_BLACK "%8.1f °C" T_WHITE_B_BLACK "        \n", imu.temperatur);
+	printf("(Temperatur)      T: " T_GREEN_B_BLACK "%8.1f " DEGREE "C" T_WHITE_B_BLACK "        \n", imu.temperatur);
 	#ifdef __linux__
 		printf("(Status)          s:     " T_GREEN_B_BLACK "0x%02x" T_WHITE_B_BLACK "      |  c:  " T_GREEN_B_BLACK "%s" T_WHITE_B_BLACK "          \n"
 			, imu.status, imu.icm_20948_imu.statusString());
